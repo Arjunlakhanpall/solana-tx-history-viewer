@@ -89,32 +89,42 @@
 <body>
   <div class="solana-bg">
     <!-- Official Solana logomark SVG, large and centered -->
-    <svg width="500" height="500" viewBox="0 0 400 400">
+    <svg width="500" height="320" viewBox="0 0 420 320" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id="solana-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#14f195"/>
-          <stop offset="100%" stop-color="#9945ff"/>
+        <linearGradient id="solana-gradient-1" x1="0" y1="0" x2="420" y2="0" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#00FFA3"/>
+          <stop offset="1" stop-color="#DC1FFF"/>
+        </linearGradient>
+        <linearGradient id="solana-gradient-2" x1="0" y1="0" x2="420" y2="0" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#00FFA3"/>
+          <stop offset="1" stop-color="#DC1FFF"/>
+        </linearGradient>
+        <linearGradient id="solana-gradient-3" x1="0" y1="0" x2="420" y2="0" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#00FFA3"/>
+          <stop offset="1" stop-color="#DC1FFF"/>
         </linearGradient>
       </defs>
-      <g>
-        <rect x="60" y="90" width="280" height="50" rx="25" fill="url(#solana-gradient)"/>
-        <rect x="60" y="175" width="280" height="50" rx="25" fill="url(#solana-gradient)" opacity="0.7"/>
-        <rect x="60" y="260" width="280" height="50" rx="25" fill="url(#solana-gradient)" opacity="0.5"/>
-      </g>
+      <rect x="40" y="40" width="340" height="40" rx="20" fill="url(#solana-gradient-1)" />
+      <rect x="40" y="140" width="340" height="40" rx="20" fill="url(#solana-gradient-2)" opacity="0.7"/>
+      <rect x="40" y="240" width="340" height="40" rx="20" fill="url(#solana-gradient-3)" opacity="0.5"/>
     </svg>
   </div>
   <div class="container">
-    <h1>Solana Wallet Transaction </h1>
+    <h1>Solana Wallet Transaction Viewer</h1>
     <input type="text" id="wallet" placeholder="Enter Solana Wallet Address" />
     <button onclick="fetchTx()">Get Transactions</button>
     <pre id="result"></pre>
   </div>
   <script type="module">
-    import { getTransactions } from '../src/solana.js';
+    import { getTransactions } from './src/solana.js';
 
     window.fetchTx = async () => {
-      const address = document.getElementById('wallet').value;
+      const address = document.getElementById('wallet').value.trim();
       const resultBox = document.getElementById('result');
+      if (!address) {
+        resultBox.innerText = "Please enter a Solana wallet address.";
+        return;
+      }
       resultBox.innerText = "Loading...";
       try {
         const txs = await getTransactions(address);
