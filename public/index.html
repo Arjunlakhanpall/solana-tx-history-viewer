@@ -3,6 +3,61 @@
 <head>
   <meta charset="UTF-8" />
   <title>Solana Wallet Transactions</title>
+  <!-- Dark Theme Styling -->
+  <style>
+    body {
+      background-color: #181818;
+      color: #f1f1f1;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 40px;
+    }
+    h1 {
+      color: #ffd700;
+      text-align: center;
+    }
+    #wallet {
+      background-color: #232323;
+      color: #f1f1f1;
+      border: 1px solid #444;
+      padding: 8px;
+      border-radius: 4px;
+      width: 320px;
+      font-size: 16px;
+    }
+    button {
+      background-color: #232323;
+      color: #ffd700;
+      border: 1px solid #444;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 16px;
+      margin-left: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background-color: #333;
+    }
+    #result {
+      background: #232323;
+      color: #90ee90;
+      padding: 16px;
+      border-radius: 6px;
+      margin-top: 24px;
+      font-size: 15px;
+      white-space: pre-wrap;
+      min-height: 100px;
+    }
+    input:focus, button:focus {
+      outline: 2px solid #ffd700;
+    }
+    /* Responsive */
+    @media (max-width: 500px) {
+      body { padding: 10px; }
+      #wallet { width: 90%; }
+    }
+  </style>
 </head>
 <body>
   <h1>Solana Wallet Transaction Viewer</h1>
