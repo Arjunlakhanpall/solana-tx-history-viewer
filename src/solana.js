@@ -1,7 +1,17 @@
-import { Connection, clusterApiUrl, PublicKey } from '@solana/web3.js';
+import { Connection, PublicKey } from '@solana/web3.js';
 
-// Use the official Solana mainnet-beta endpoint
-const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed');
+// --- USE YOUR PRIVATE ENDPOINT FOR RELIABILITY ---
+// Replace with your preferred provider and API key
+// For Helius:
+const connection = new Connection(
+  'https://rpc.helius.xyz/?api-key=e5d53853-7801-43e6-8a37-2cf45ace82d8',
+  'confirmed'
+);
+// For QuickNode, use this instead:
+// const connection = new Connection(
+//   'https://solana-mainnet.quiknode.pro/e5d53853-7801-43e6-8a37-2cf45ace82d8/',
+//   'confirmed'
+// );
 
 /**
  * Fetches and returns the latest 10 transactions for a given Solana address.
@@ -11,7 +21,7 @@ const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed');
  */
 export async function getTransactions(address) {
   try {
-    // Validate the address
+    if (!address) throw new Error("No address provided.");
     const pubKey = new PublicKey(address);
 
     // Fetch the latest 10 signatures for the address
@@ -38,6 +48,8 @@ export async function getTransactions(address) {
     // Filter out any nulls (in case some txs are not found)
     return txs.filter(Boolean);
   } catch (error) {
+    // Log for debugging
+    console.error("Solana API error:", error);
     throw new Error("Failed to fetch transactions: " + error.message);
   }
 }
