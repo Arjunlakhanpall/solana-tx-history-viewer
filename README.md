@@ -122,7 +122,7 @@ Try these:
 ## 📄 License
 MIT License
 
-Copyright (c) 2025 ARJUN LAKHANPAL
+Copyright (c) 2025 
 ---
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
@@ -130,5 +130,5 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## 🤝 Credits
 
-Made with ❤️ by [Your Name]
+Made with ❤️ by ARJUN LAKHANPAL
 Using [Helius RPC](https://www.helius.xyz/) and Solana Web3
