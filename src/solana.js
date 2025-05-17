@@ -1,17 +1,10 @@
 import { Connection, PublicKey } from '@solana/web3.js';
 
-// --- USE YOUR PRIVATE ENDPOINT FOR RELIABILITY ---
-// Replace with your preferred provider and API key
-// For Helius:
+// Use your Helius endpoint for reliability
 const connection = new Connection(
   'https://rpc.helius.xyz/?api-key=e5d53853-7801-43e6-8a37-2cf45ace82d8',
   'confirmed'
 );
-// For QuickNode, use this instead:
-// const connection = new Connection(
-//   'https://solana-mainnet.quiknode.pro/e5d53853-7801-43e6-8a37-2cf45ace82d8/',
-//   'confirmed'
-// );
 
 /**
  * Fetches and returns the latest 10 transactions for a given Solana address.
