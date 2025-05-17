@@ -1,11 +1,11 @@
 import { Connection, clusterApiUrl, PublicKey } from '@solana/web3.js';
 
-// Create a connection to the mainnet-beta cluster
+// Use the official Solana mainnet-beta endpoint
 const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed');
 
 /**
  * Fetches and returns the latest 10 transactions for a given Solana address.
- * Each transaction includes signature, block time, slot, and instructions.
+ * Each transaction includes signature, block time, slot, and instructions count.
  * @param {string} address - The Solana wallet address.
  * @returns {Promise<Array>} Array of transaction details.
  */
@@ -17,24 +17,27 @@ export async function getTransactions(address) {
     // Fetch the latest 10 signatures for the address
     const signatures = await connection.getSignaturesForAddress(pubKey, { limit: 10 });
 
-    const txs = [];
-    for (const sig of signatures) {
-      // Fetch parsed transaction details for each signature
-      const tx = await connection.getParsedTransaction(sig.signature);
-
-      // Defensive: skip if transaction not found (can happen for very recent txs)
-      if (!tx) continue;
-
-      txs.push({
-        signature: sig.signature,
-        blockTime: tx.blockTime ? new Date(tx.blockTime * 1000).toLocaleString() : "N/A",
-        slot: tx.slot,
-        instructions: tx.transaction.message.instructions,
-      });
+    if (!signatures || signatures.length === 0) {
+      return [];
     }
-    return txs;
+
+    // Fetch transaction details for each signature in parallel
+    const txs = await Promise.all(
+      signatures.map(async sig => {
+        const tx = await connection.getParsedTransaction(sig.signature);
+        if (!tx) return null;
+        return {
+          signature: sig.signature,
+          blockTime: tx.blockTime ? new Date(tx.blockTime * 1000).toLocaleString() : "N/A",
+          slot: tx.slot,
+          instructions: tx.transaction.message.instructions,
+        };
+      })
+    );
+
+    // Filter out any nulls (in case some txs are not found)
+    return txs.filter(Boolean);
   } catch (error) {
-    // Throw error for the UI to display
     throw new Error("Failed to fetch transactions: " + error.message);
   }
 }
