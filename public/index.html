@@ -3,68 +3,130 @@
 <head>
   <meta charset="UTF-8" />
   <title>Solana Wallet Transactions</title>
-  <!-- Dark Theme Styling -->
   <style>
+    :root {
+      --bg-light: #fff;
+      --bg-dark: #111;
+      --text-light: #111;
+      --text-dark: #fff;
+      --accent: #14f195;
+    }
     body {
-      background-color: #181818;
-      color: #f1f1f1;
+      background: var(--bg-light);
+      color: var(--text-light);
       font-family: Arial, sans-serif;
       margin: 0;
-      padding: 40px;
+      min-height: 100vh;
+      position: relative;
+      transition: background 0.3s, color 0.3s;
+      overflow-x: hidden;
+    }
+    body.dark {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+    }
+    .solana-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      opacity: 0.07;
+      pointer-events: none;
+      background: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      position: relative;
+      z-index: 1;
+      padding: 40px 16px 16px 16px;
+      max-width: 600px;
+      margin: 0 auto;
     }
     h1 {
-      color: #ffd700;
       text-align: center;
+      margin-bottom: 24px;
+      letter-spacing: 1px;
     }
     #wallet {
-      background-color: #232323;
-      color: #f1f1f1;
-      border: 1px solid #444;
+      background: transparent;
+      color: inherit;
+      border: 1px solid #bbb;
       padding: 8px;
       border-radius: 4px;
       width: 320px;
       font-size: 16px;
+      margin-right: 8px;
+      transition: border 0.3s;
     }
     button {
-      background-color: #232323;
-      color: #ffd700;
-      border: 1px solid #444;
-      padding: 8px 16px;
+      background: var(--accent);
+      color: #111;
+      border: none;
+      padding: 8px 18px;
       border-radius: 4px;
       font-size: 16px;
-      margin-left: 8px;
       cursor: pointer;
-      transition: background 0.2s;
+      margin-bottom: 8px;
+      transition: background 0.3s, color 0.3s;
     }
-    button:hover {
-      background-color: #333;
+    button#theme-toggle {
+      float: right;
+      margin-top: -10px;
+      margin-right: 8px;
+      background: transparent;
+      color: inherit;
+      border: 1px solid #bbb;
+      padding: 4px 12px;
+      font-size: 16px;
     }
-    #result {
-      background: #232323;
-      color: #90ee90;
-      padding: 16px;
-      border-radius: 6px;
-      margin-top: 24px;
+    pre#result {
+      background: rgba(0,0,0,0.07);
+      color: inherit;
+      padding: 18px;
+      border-radius: 8px;
+      margin-top: 28px;
       font-size: 15px;
       white-space: pre-wrap;
       min-height: 100px;
+      word-break: break-word;
     }
-    input:focus, button:focus {
-      outline: 2px solid #ffd700;
+    body.dark pre#result {
+      background: rgba(255,255,255,0.09);
     }
-    /* Responsive */
     @media (max-width: 500px) {
-      body { padding: 10px; }
-      #wallet { width: 90%; }
+      #wallet { width: 98%; margin-bottom: 8px; }
+      .container { padding: 20px 2px; }
     }
   </style>
 </head>
 <body>
-  <h1>Solana Wallet Transaction Viewer</h1>
-  <input type="text" id="wallet" placeholder="Enter Solana Wallet Address" />
-  <button onclick="fetchTx()">Get Transactions</button>
-  <pre id="result"></pre>
-
+  <div class="solana-bg">
+    <!-- Solana logo SVG as background, subtle and large -->
+    <svg width="60vw" height="60vw" viewBox="0 0 400 400">
+      <defs>
+        <linearGradient id="solana-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#14f195"/>
+          <stop offset="100%" stop-color="#9945ff"/>
+        </linearGradient>
+      </defs>
+      <rect width="400" height="400" rx="80" fill="url(#solana-gradient)" />
+      <g>
+        <rect x="80" y="120" width="240" height="40" rx="20" fill="#fff" opacity="0.8"/>
+        <rect x="80" y="180" width="240" height="40" rx="20" fill="#fff" opacity="0.5"/>
+        <rect x="80" y="240" width="240" height="40" rx="20" fill="#fff" opacity="0.3"/>
+      </g>
+    </svg>
+  </div>
+  <div class="container">
+    <button id="theme-toggle" onclick="toggleTheme()">🌓</button>
+    <h1>Solana Wallet Transaction Viewer</h1>
+    <input type="text" id="wallet" placeholder="Enter Solana Wallet Address" />
+    <button onclick="fetchTx()">Get Transactions</button>
+    <pre id="result"></pre>
+  </div>
   <script type="module">
     import { getTransactions } from '../src/solana.js';
 
@@ -74,10 +136,19 @@
       resultBox.innerText = "Loading...";
       try {
         const txs = await getTransactions(address);
-        resultBox.innerText = JSON.stringify(txs, null, 2);
+        if (!txs || txs.length === 0) {
+          resultBox.innerText = "No transactions found.";
+        } else {
+          resultBox.innerText = JSON.stringify(txs, null, 2);
+        }
       } catch (e) {
         resultBox.innerText = "Error: " + e.message;
       }
+    };
+
+    // Theme toggle logic
+    window.toggleTheme = function() {
+      document.body.classList.toggle('dark');
     };
   </script>
 </body>
