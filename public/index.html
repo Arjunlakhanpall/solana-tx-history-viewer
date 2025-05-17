@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Solana Wallet Transactions</title>
+</head>
+<body>
+  <h1>Solana Wallet Transaction Viewer</h1>
+  <input type="text" id="wallet" placeholder="Enter Solana Wallet Address" />
+  <button onclick="fetchTx()">Get Transactions</button>
+  <pre id="result"></pre>
+
+  <script type="module">
+    import { getTransactions } from '../src/solana.js';
+
+    window.fetchTx = async () => {
+      const address = document.getElementById('wallet').value;
+      const resultBox = document.getElementById('result');
+      resultBox.innerText = "Loading...";
+      try {
+        const txs = await getTransactions(address);
+        resultBox.innerText = JSON.stringify(txs, null, 2);
+      } catch (e) {
+        resultBox.innerText = "Error: " + e.message;
+      }
+    };
+  </script>
+</body>
+</html>
