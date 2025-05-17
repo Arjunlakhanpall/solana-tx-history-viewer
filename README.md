@@ -123,6 +123,7 @@ Try these:
 MIT License
 
 Copyright (c) 2025 ARJUN LAKHANPAL
+---
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
