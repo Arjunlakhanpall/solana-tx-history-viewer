@@ -11,6 +11,7 @@ const connection = new Connection(clusterApiUrl('mainnet-beta'), 'confirmed');
  */
 export async function getTransactions(address) {
   try {
+    // Validate the address
     const pubKey = new PublicKey(address);
 
     // Fetch the latest 10 signatures for the address
