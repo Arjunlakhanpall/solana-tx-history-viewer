@@ -102,14 +102,17 @@
       color: #aaa;
       margin-top: 2px;
     }
-    .error, .empty {
+    .error {
       color: #ff7675;
       margin-top: 20px;
       font-size: 16px;
       text-align: center;
     }
     .empty {
-      color: #aaa;
+      color: #fff;
+      margin-top: 20px;
+      font-size: 16px;
+      text-align: center;
     }
     @media (max-width: 500px) {
       #wallet { width: 98%; margin-bottom: 8px; }
@@ -142,7 +145,7 @@
       try {
         const txs = await getTransactions(address);
         if (!txs || txs.length === 0) {
-          resultBox.innerHTML = `<div class="empty">No transactions found.</div>`;
+          resultBox.innerHTML = `<div class="empty">No transaction yet</div>`;
         } else {
           let html = `<ul class="tx-list">`;
           txs.forEach(tx => {
