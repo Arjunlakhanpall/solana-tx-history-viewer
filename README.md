@@ -2,6 +2,8 @@
 
 This project fetches and displays the latest 10 transactions for a given Solana wallet address using the Helius RPC and REST APIs. It first attempts to fetch via the `@solana/web3.js` SDK (RPC), and if no transactions are found, it falls back to the Helius REST API.
 
+[![Live Site](https://img.shields.io/badge/Live%20Site-Visit-green?style=for-the-badge&logo=vercel)](https://solana-tx-history-viewer.onrender.com/)
+
 ---
 
 ## 🚀 Features
