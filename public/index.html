@@ -19,7 +19,7 @@
       width: 100vw;
       height: 100vh;
       z-index: 0;
-      opacity: 0.06;
+      opacity: 0.08; /* subtle effect */
       pointer-events: none;
       display: flex;
       align-items: center;
@@ -88,13 +88,18 @@
 </head>
 <body>
   <div class="solana-bg">
-    <!-- White Solana logo SVG as background, subtle and large -->
-    <svg width="60vw" height="60vw" viewBox="0 0 400 400">
-      <rect width="400" height="400" rx="80" fill="#fff" />
+    <!-- Official Solana logomark SVG, large and centered -->
+    <svg width="500" height="500" viewBox="0 0 400 400">
+      <defs>
+        <linearGradient id="solana-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#14f195"/>
+          <stop offset="100%" stop-color="#9945ff"/>
+        </linearGradient>
+      </defs>
       <g>
-        <rect x="80" y="120" width="240" height="40" rx="20" fill="#000" opacity="0.8"/>
-        <rect x="80" y="180" width="240" height="40" rx="20" fill="#000" opacity="0.5"/>
-        <rect x="80" y="240" width="240" height="40" rx="20" fill="#000" opacity="0.3"/>
+        <rect x="60" y="90" width="280" height="50" rx="25" fill="url(#solana-gradient)"/>
+        <rect x="60" y="175" width="280" height="50" rx="25" fill="url(#solana-gradient)" opacity="0.7"/>
+        <rect x="60" y="260" width="280" height="50" rx="25" fill="url(#solana-gradient)" opacity="0.5"/>
       </g>
     </svg>
   </div>
