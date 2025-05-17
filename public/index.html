@@ -19,7 +19,7 @@
       width: 100vw;
       height: 100vh;
       z-index: 0;
-      opacity: 0.22; /* adjust for brightness */
+      opacity: 0.22;
       pointer-events: none;
       background: url('https://cdn.brandfetch.io/ide0NUuTHO/idBgqrcmQa.svg?c=1bxid64Mup7aczewSAYMX&t=1646249960796') no-repeat center center;
       background-size: 60vw auto;
@@ -67,22 +67,55 @@
       background: #fff;
       color: #000;
     }
-    pre#result {
-      background: #111;
-      color: #fff;
-      padding: 18px;
-      border-radius: 8px;
-      margin-top: 28px;
+    #result {
+      margin-top: 32px;
       font-size: 15px;
-      white-space: pre-wrap;
-      min-height: 100px;
-      word-break: break-word;
-      border: 1px solid #fff;
+      min-height: 24px;
+    }
+    .tx-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .tx-list li {
+      background: rgba(255,255,255,0.07);
+      color: #fff;
+      margin-bottom: 14px;
+      padding: 14px 14px 10px 14px;
+      border-radius: 7px;
+      border: 1px solid #222;
+      word-break: break-all;
+      transition: background 0.2s;
+    }
+    .tx-list li:hover {
+      background: rgba(20,241,149,0.13);
+      border-color: #14f195;
+    }
+    .tx-sig {
+      font-size: 13px;
+      color: #14f195;
+      font-family: monospace;
+      word-break: break-all;
+    }
+    .tx-meta {
+      font-size: 13px;
+      color: #aaa;
+      margin-top: 2px;
+    }
+    .error, .empty {
+      color: #ff7675;
+      margin-top: 20px;
+      font-size: 16px;
+      text-align: center;
+    }
+    .empty {
+      color: #aaa;
     }
     @media (max-width: 500px) {
       #wallet { width: 98%; margin-bottom: 8px; }
       .container { padding: 20px 2px; }
       .solana-bg { background-size: 90vw auto; }
+      .tx-list li { font-size: 13px; }
     }
   </style>
 </head>
@@ -92,7 +125,7 @@
     <h1>Solana Wallet Transaction Viewer</h1>
     <input type="text" id="wallet" placeholder="Enter Solana Wallet Address" />
     <button onclick="fetchTx()">Get Transactions</button>
-    <pre id="result"></pre>
+    <div id="result"></div>
   </div>
   <script type="module">
     import { getTransactions } from './src/solana.js';
@@ -100,20 +133,33 @@
     window.fetchTx = async () => {
       const address = document.getElementById('wallet').value.trim();
       const resultBox = document.getElementById('result');
+      resultBox.innerHTML = "";
       if (!address) {
-        resultBox.innerText = "Please enter a Solana wallet address.";
+        resultBox.innerHTML = `<div class="error">Please enter a Solana wallet address.</div>`;
         return;
       }
-      resultBox.innerText = "Loading...";
+      resultBox.innerHTML = `<div class="empty">Loading...</div>`;
       try {
         const txs = await getTransactions(address);
         if (!txs || txs.length === 0) {
-          resultBox.innerText = "No transactions found.";
+          resultBox.innerHTML = `<div class="empty">No transactions found.</div>`;
         } else {
-          resultBox.innerText = JSON.stringify(txs, null, 2);
+          let html = `<ul class="tx-list">`;
+          txs.forEach(tx => {
+            html += `<li>
+              <div class="tx-sig"><b>Signature:</b> ${tx.signature}</div>
+              <div class="tx-meta">
+                <b>Time:</b> ${tx.blockTime} &nbsp; 
+                <b>Slot:</b> ${tx.slot} &nbsp; 
+                <b>Instructions:</b> ${tx.instructions.length}
+              </div>
+            </li>`;
+          });
+          html += `</ul>`;
+          resultBox.innerHTML = html;
         }
       } catch (e) {
-        resultBox.innerText = "Error: " + e.message;
+        resultBox.innerHTML = `<div class="error">Error: ${e.message}</div>`;
       }
     };
   </script>
